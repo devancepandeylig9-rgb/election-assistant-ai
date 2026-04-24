@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Assistant AI</title>
+    <!-- Link to external CSS for styling -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Chat Container -->
+    <div class="chat-container">
+        <!-- Header -->
+        <header class="chat-header">
+            <h1>Election Assistant AI</h1>
+            <p>Your guide to the Indian election process</p>
+        </header>
+        
+        <!-- Chat Area where messages will appear -->
+        <div class="chat-display" id="chat-display">
+            <!-- Initial Bot Message -->
+            <div class="message bot-message">
+                <p>Hello! I am the Election Assistant AI. How can I help you understand the election process today?</p>
+            </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="quick-actions">
+            <button class="action-btn" onclick="sendQuickMessage('How Elections Work')">How Elections Work</button>
+            <button class="action-btn" onclick="sendQuickMessage('Voting Process')">Voting Process</button>
+            <button class="action-btn" onclick="sendQuickMessage('Eligibility')">Eligibility</button>
+            <button class="action-btn" onclick="sendQuickMessage('Election Timeline')">Election Timeline</button>
+        </div>
+
+        <!-- User Input Area -->
+        <div class="chat-input-area">
+            <input type="text" id="user-input" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
