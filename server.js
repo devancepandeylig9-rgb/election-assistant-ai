@@ -46,10 +46,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Only start the server if not in test mode
-if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Server is running on port ${PORT}`);
+// Only start the server if run directly (not via tests)
+if (require.main === module) {
+    const port = parseInt(process.env.PORT, 10) || 8080;
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`Server is running on port ${port}`);
     });
 }
 

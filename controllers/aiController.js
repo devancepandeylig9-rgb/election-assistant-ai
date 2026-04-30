@@ -89,82 +89,89 @@ const responses = {
 };
 
 // ==========================================
-// 2. Train the NLP Model
+// 2. Train the NLP Model (Safe Init)
 // ==========================================
+try {
+    // Train: Greetings
+    classifier.addDocument('hello', 'greeting');
+    classifier.addDocument('hi', 'greeting');
+    classifier.addDocument('hey', 'greeting');
+    classifier.addDocument('good morning', 'greeting');
 
-// Train: Greetings
-classifier.addDocument('hello', 'greeting');
-classifier.addDocument('hi', 'greeting');
-classifier.addDocument('hey', 'greeting');
-classifier.addDocument('good morning', 'greeting');
+    // Train: How Elections Work
+    classifier.addDocument('how do elections work', 'how_elections_work');
+    classifier.addDocument('explain the election process', 'how_elections_work');
+    classifier.addDocument('what happens during an election', 'how_elections_work');
+    classifier.addDocument('election procedure', 'how_elections_work');
+    classifier.addDocument('how does india conduct elections', 'how_elections_work');
 
-// Train: How Elections Work
-classifier.addDocument('how do elections work', 'how_elections_work');
-classifier.addDocument('explain the election process', 'how_elections_work');
-classifier.addDocument('what happens during an election', 'how_elections_work');
-classifier.addDocument('election procedure', 'how_elections_work');
-classifier.addDocument('how does india conduct elections', 'how_elections_work');
+    // Train: Voting Process
+    classifier.addDocument('how to vote', 'voting_process');
+    classifier.addDocument('what is the voting process', 'voting_process');
+    classifier.addDocument('where do i go to vote', 'voting_process');
+    classifier.addDocument('how do i cast my vote', 'voting_process');
+    classifier.addDocument('what do i do at the polling booth', 'voting_process');
+    classifier.addDocument('voting machine', 'voting_process');
 
-// Train: Voting Process
-classifier.addDocument('how to vote', 'voting_process');
-classifier.addDocument('what is the voting process', 'voting_process');
-classifier.addDocument('where do i go to vote', 'voting_process');
-classifier.addDocument('how do i cast my vote', 'voting_process');
-classifier.addDocument('what do i do at the polling booth', 'voting_process');
-classifier.addDocument('voting machine', 'voting_process');
+    // Train: Eligibility
+    classifier.addDocument('am i eligible to vote', 'eligibility');
+    classifier.addDocument('who can vote', 'eligibility');
+    classifier.addDocument('what is the minimum age to vote', 'eligibility');
+    classifier.addDocument('voting age', 'eligibility');
+    classifier.addDocument('do i need to be a citizen', 'eligibility');
+    classifier.addDocument('eligibility criteria', 'eligibility');
 
-// Train: Eligibility
-classifier.addDocument('am i eligible to vote', 'eligibility');
-classifier.addDocument('who can vote', 'eligibility');
-classifier.addDocument('what is the minimum age to vote', 'eligibility');
-classifier.addDocument('voting age', 'eligibility');
-classifier.addDocument('do i need to be a citizen', 'eligibility');
-classifier.addDocument('eligibility criteria', 'eligibility');
+    // Train: Timeline
+    classifier.addDocument('what is the election timeline', 'timeline');
+    classifier.addDocument('when do elections happen', 'timeline');
+    classifier.addDocument('what are the stages of an election', 'timeline');
+    classifier.addDocument('election schedule', 'timeline');
+    classifier.addDocument('dates of election', 'timeline');
 
-// Train: Timeline
-classifier.addDocument('what is the election timeline', 'timeline');
-classifier.addDocument('when do elections happen', 'timeline');
-classifier.addDocument('what are the stages of an election', 'timeline');
-classifier.addDocument('election schedule', 'timeline');
-classifier.addDocument('dates of election', 'timeline');
+    // Train: Tampering & Fraud
+    classifier.addDocument('what if my vote is tampered', 'tampering_fraud');
+    classifier.addDocument('can evms be hacked', 'tampering_fraud');
+    classifier.addDocument('someone is forcing me to vote', 'tampering_fraud');
+    classifier.addDocument('report election fraud', 'tampering_fraud');
+    classifier.addDocument('is the voting machine safe', 'tampering_fraud');
+    classifier.addDocument('what is vvpat', 'tampering_fraud');
+    classifier.addDocument('bribery at the polling booth', 'tampering_fraud');
+    classifier.addDocument('they are rigging the election', 'tampering_fraud');
 
-// Train: Tampering & Fraud
-classifier.addDocument('what if my vote is tampered', 'tampering_fraud');
-classifier.addDocument('can evms be hacked', 'tampering_fraud');
-classifier.addDocument('someone is forcing me to vote', 'tampering_fraud');
-classifier.addDocument('report election fraud', 'tampering_fraud');
-classifier.addDocument('is the voting machine safe', 'tampering_fraud');
-classifier.addDocument('what is vvpat', 'tampering_fraud');
-classifier.addDocument('bribery at the polling booth', 'tampering_fraud');
-classifier.addDocument('they are rigging the election', 'tampering_fraud');
+    // Train: Contact Info
+    classifier.addDocument('how do i contact the election commission', 'contact_info');
+    classifier.addDocument('what is the helpline number', 'contact_info');
+    classifier.addDocument('eci website', 'contact_info');
+    classifier.addDocument('where can i complain', 'contact_info');
+    classifier.addDocument('customer service number', 'contact_info');
+    classifier.addDocument('official website link', 'contact_info');
 
-// Train: Contact Info
-classifier.addDocument('how do i contact the election commission', 'contact_info');
-classifier.addDocument('what is the helpline number', 'contact_info');
-classifier.addDocument('eci website', 'contact_info');
-classifier.addDocument('where can i complain', 'contact_info');
-classifier.addDocument('customer service number', 'contact_info');
-classifier.addDocument('official website link', 'contact_info');
-
-// Perform the actual training synchronously on startup
-classifier.train();
+    // Perform the actual training synchronously on startup
+    classifier.train();
+    console.log("NLP Model trained successfully.");
+} catch (error) {
+    console.error("Failed to train NLP Model:", error);
+}
 
 // ==========================================
 // 3. Inference Function
 // ==========================================
 async function generateAiResponse(userMessage) {
-    // 1. Analyze the user's message
-    const classifications = classifier.getClassifications(userMessage);
-    
-    // 2. Get the top classification
-    const topMatch = classifications[0];
-    
-    // 3. Determine if the model is confident enough
-    // The confidence threshold might need tuning depending on data
-    if (topMatch && topMatch.value > 0.4) {
-        return responses[topMatch.label];
-    } else {
-        // If confidence is low, the question might be off-topic
+    try {
+        // 1. Analyze the user's message
+        const classifications = classifier.getClassifications(userMessage);
+        
+        // 2. Get the top classification
+        const topMatch = classifications[0];
+        
+        // 3. Determine if the model is confident enough
+        if (topMatch && topMatch.value > 0.4) {
+            return responses[topMatch.label];
+        } else {
+            return responses.fallback;
+        }
+    } catch (e) {
+        console.error("Inference error:", e);
         return responses.fallback;
     }
 }
