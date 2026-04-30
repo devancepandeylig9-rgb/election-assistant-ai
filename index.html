@@ -11,35 +11,42 @@
 </head>
 <body>
     <!-- Main Chat Container -->
-    <div class="chat-container">
+    <main class="chat-container" role="main" aria-label="Election Assistant Chat Interface">
         <!-- Header -->
         <header class="chat-header">
-            <h1>Election Assistant AI</h1>
+            <h1 id="app-title">Election Assistant AI</h1>
             <p>Your guide to the Indian election process</p>
         </header>
         
         <!-- Chat Area where messages will appear -->
-        <div class="chat-display" id="chat-display">
+        <section class="chat-display" id="chat-display" role="log" aria-live="polite" aria-labelledby="app-title">
             <!-- Initial Bot Message -->
-            <div class="message bot-message">
+            <div class="message bot-message" tabindex="0">
                 <p>Hello! I am the Election Assistant AI. How can I help you understand the election process today?</p>
             </div>
+        </section>
+
+        <!-- Loading Indicator (Hidden by default) -->
+        <div id="loading-indicator" class="loading-indicator" aria-hidden="true">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <span class="sr-only">AI is typing...</span>
         </div>
 
         <!-- Quick Action Buttons -->
-        <div class="quick-actions">
-            <button class="action-btn" onclick="sendQuickMessage('How Elections Work')">How Elections Work</button>
-            <button class="action-btn" onclick="sendQuickMessage('Voting Process')">Voting Process</button>
-            <button class="action-btn" onclick="sendQuickMessage('Eligibility')">Eligibility</button>
-            <button class="action-btn" onclick="sendQuickMessage('Election Timeline')">Election Timeline</button>
-        </div>
+        <nav class="quick-actions" aria-label="Quick action questions">
+            <button class="action-btn" onclick="sendQuickMessage('How Elections Work')" aria-label="Ask about how elections work">How Elections Work</button>
+            <button class="action-btn" onclick="sendQuickMessage('Voting Process')" aria-label="Ask about the voting process">Voting Process</button>
+            <button class="action-btn" onclick="sendQuickMessage('Eligibility')" aria-label="Ask about voter eligibility">Eligibility</button>
+            <button class="action-btn" onclick="sendQuickMessage('Election Timeline')" aria-label="Ask about the election timeline">Election Timeline</button>
+        </nav>
 
         <!-- User Input Area -->
-        <div class="chat-input-area">
-            <input type="text" id="user-input" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
-            <button id="send-btn" onclick="sendMessage()">Send</button>
-        </div>
-    </div>
+        <form class="chat-input-area" onsubmit="handleFormSubmit(event)" aria-label="Message input form">
+            <label for="user-input" class="sr-only">Type your question here</label>
+            <input type="text" id="user-input" placeholder="Type your question here..." aria-required="true">
+            <button type="submit" id="send-btn" aria-label="Send message">Send</button>
+        </form>
+    </main>
 
     <!-- Link to external JavaScript -->
     <script src="script.js"></script>
